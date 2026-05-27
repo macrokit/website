@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Macrokit — Weak and local LLMs that work like frontier models</title>
+  <meta name="description" content="An open-source SDK that lets weak and local LLMs work like frontier models on narrow workflows. Moves multi-step reasoning to design-time so runtime is one-shot intent classification." />
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href="https://macrokit.dev/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Macrokit" />
+  <meta property="og:description" content="An open-source SDK that lets weak and local LLMs work like frontier models on narrow workflows." />
+  <meta property="og:url" content="https://macrokit.dev/" />
+  <meta property="og:image" content="https://macrokit.dev/wordmark.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container row">
+      <a href="/" class="wordmark-link" aria-label="Macrokit home">
+        <img src="/wordmark.svg" alt="Macrokit" height="32" />
+      </a>
+      <nav>
+        <a href="https://github.com/macrokit" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Pre-release · Launching Q3 2026</p>
+        <h1>Weak and local LLMs that work like frontier models &mdash; on narrow workflows.</h1>
+        <p class="lede">
+          Macrokit is an open-source SDK for shipping LLM applications under cloud-API constraints &mdash;
+          data residency, compliance, air-gapped networks, or budget.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/macrokit" rel="noopener">View on GitHub</a>
+          <a class="btn btn-ghost" href="#pattern">How it works</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="pattern" class="section">
+      <div class="container">
+        <h2>The pattern, in 60 seconds</h2>
+        <p>
+          The hard part for weak models is multi-step reasoning. The easy part is routing.
+          Macrokit pushes the hard part offline so cheap and local models can do the routing reliably.
+        </p>
+
+        <div class="grid">
+          <div class="card">
+            <span class="step">1</span>
+            <h3>Design-time</h3>
+            <p>
+              A strong model (Claude, GPT-4o) solves a workflow once, supervised by a developer,
+              and encodes it as a deterministic, parameterized <em>macro</em>.
+            </p>
+          </div>
+          <div class="card">
+            <span class="step">2</span>
+            <h3>Runtime</h3>
+            <p>
+              A weak or local model receives a user request and only has to do
+              <em>intent classification</em> &mdash; one-shot routing &mdash; to the matching macro.
+            </p>
+          </div>
+          <div class="card">
+            <span class="step">3</span>
+            <h3>Distillation gate</h3>
+            <p>
+              Every session that touched a workflow without a macro must encode one before ending.
+              <code>macrokit gate</code> enforces it. The macro library compounds.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>What you get</h2>
+        <ul class="feature-list">
+          <li>
+            <strong><code>@macrokit/runtime</code></strong>
+            &mdash; macro registry, dispatcher, session log, intent router.
+          </li>
+          <li>
+            <strong><code>@macrokit/llm</code></strong>
+            &mdash; one transport for OpenAI-compatible providers (OpenAI, DeepSeek, Qwen, OpenRouter, &hellip;) plus Ollama; bail-out detector that catches weak-model failure modes before they reach your app.
+          </li>
+          <li>
+            <strong><code>@macrokit/browser</code></strong>
+            &mdash; Playwright service with annotated screenshots and DOM action menus. Weak models pick numbered elements instead of estimating coordinates.
+          </li>
+          <li>
+            <strong><code>@macrokit/authoring</code></strong>
+            &mdash; <code>defineMacro()</code>, schema helpers, a test harness with recording mode.
+          </li>
+          <li>
+            <strong><code>macrokit</code> CLI</strong>
+            &mdash; <code>init</code>, <code>lint</code>, and the headline <code>gate</code> command that enforces the distillation discipline.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>How it differs</h2>
+        <dl class="compare">
+          <dt>Not an agent framework.</dt>
+          <dd>Agent frameworks compete on letting LLMs reason. Macrokit competes by eliminating runtime reasoning. Different philosophy.</dd>
+
+          <dt>Not a model.</dt>
+          <dd>BYO-model. Ships adapters for OpenAI-compatible APIs and Ollama out of the box.</dd>
+
+          <dt>Not RPA.</dt>
+          <dd>RPA records UI clicks at the pixel level. Macros are recorded at the semantic level &mdash; typed tool calls with named arguments &mdash; and are diff-reviewable code.</dd>
+
+          <dt>Not a no-code platform.</dt>
+          <dd>Authoring a macro assumes a developer plus a strong model in the loop. End users see only the chat interface.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section section-alt status">
+      <div class="container">
+        <h2>Status</h2>
+        <p>
+          Pre-release. Targeting public launch in Q3 2026. The pattern Macrokit codifies has been running
+          in a private production deployment since early 2026. Macrokit is the vertical-agnostic extraction
+          of that work into a reusable SDK.
+        </p>
+        <p>
+          The docs site, quickstart, API reference, and reference implementation land at launch.
+          Until then this page is the canonical pointer.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container row">
+      <span>&copy; 2026 Macrokit. Apache 2.0.</span>
+      <nav>
+        <a href="https://github.com/macrokit" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
