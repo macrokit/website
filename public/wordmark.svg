@@ -2,10 +2,8 @@
   <title>Macrokit</title>
   <!-- Mark, scaled to 96x96 at left -->
   <g transform="translate(16,16) scale(0.375)">
-    <rect x="40" y="40" width="80" height="80" rx="16" fill="#4F46E5"/>
-    <rect x="136" y="40" width="80" height="80" rx="16" fill="#4F46E5"/>
-    <rect x="40" y="136" width="80" height="80" rx="16" fill="#4F46E5"/>
-    <rect x="136" y="136" width="80" height="80" rx="16" fill="#1E1B4B"/>
+    <rect x="32" y="32" width="160" height="160" rx="28" fill="#4F46E5"/>
+    <rect x="96" y="96" width="128" height="128" rx="22" fill="#1E1B4B"/>
   </g>
   <!-- Wordmark. NOTE: uses system fonts; convert to paths for production. -->
   <text x="128" y="84"

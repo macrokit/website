@@ -1,9 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Macrokit">
   <title>Macrokit</title>
-  <!-- Kit: three available macros in brand color -->
-  <rect x="40" y="40" width="80" height="80" rx="16" fill="#4F46E5"/>
-  <rect x="136" y="40" width="80" height="80" rx="16" fill="#4F46E5"/>
-  <rect x="40" y="136" width="80" height="80" rx="16" fill="#4F46E5"/>
-  <!-- Dispatched: the macro selected by the intent router -->
-  <rect x="136" y="136" width="80" height="80" rx="16" fill="#1E1B4B"/>
+  <!-- Kit: the container of available macros -->
+  <rect x="32" y="32" width="160" height="160" rx="28" fill="#4F46E5"/>
+  <!-- Dispatched: the macro emerging from the kit, offset down-right -->
+  <rect x="96" y="96" width="128" height="128" rx="22" fill="#1E1B4B"/>
 </svg>
