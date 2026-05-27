@@ -169,6 +169,37 @@
         </p>
       </div>
     </section>
+
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Build on top</h2>
+        <p>
+          Macrokit keeps <code>core/examples/</code> small. Vertical macro libraries live as standalone
+          npm packages you publish yourself &mdash; named <code>macrokit-macros-&lt;vertical&gt;</code>,
+          tagged with the <code>macrokit-macros</code> GitHub topic, and (optionally) listed in the
+          community registry for discoverability. The contributor surface is intentionally large; the
+          curated surface is intentionally small.
+        </p>
+        <p>
+          Run <code>macrokit lint --pkg &lt;path&gt;</code> against your package to check it against the
+          conformance bar before opening a listing PR. The same checks reviewers run.
+        </p>
+        <ul class="feature-list">
+          <li>
+            <strong><a href="https://github.com/macrokit/core/blob/main/CONTRIBUTING_MACROS.md" rel="noopener">CONTRIBUTING_MACROS.md</a></strong>
+            &mdash; naming, requirements, registry rules, anti-patterns.
+          </li>
+          <li>
+            <strong><a href="https://github.com/macrokit/.github/tree/main/community" rel="noopener">Community registry</a></strong>
+            &mdash; the canonical list. Open a PR to add your package.
+          </li>
+          <li>
+            <strong><a href="https://github.com/topics/macrokit-macros" rel="noopener">#macrokit-macros</a></strong>
+            &mdash; the GitHub topic for soft discovery, registry-listed or not.
+          </li>
+        </ul>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
