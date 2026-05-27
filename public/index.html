@@ -93,7 +93,7 @@
           </li>
           <li>
             <strong><code>@macrokit/llm</code></strong>
-            &mdash; one transport for OpenAI-compatible providers (OpenAI, DeepSeek, Qwen, OpenRouter, &hellip;) plus Ollama; bail-out detector that catches weak-model failure modes before they reach your app.
+            &mdash; one transport for OpenAI-compatible providers (OpenAI, DeepSeek, Qwen, OpenRouter, &hellip;), Ollama, and Anthropic; bail-out detector that catches weak-model failure modes before they reach your app.
           </li>
           <li>
             <strong><code>@macrokit/browser</code></strong>
@@ -130,7 +130,30 @@
       </div>
     </section>
 
-    <section class="section section-alt status">
+    <section class="section section-alt">
+      <div class="container">
+        <h2>Benchmark</h2>
+        <p>
+          On a pre-registered 100-task maintainer-agent corpus, the production on-device model from
+          one Macrokit deployment &mdash; <strong>Qwen 2.5 7B Q4_K_M, running locally on a 16&nbsp;GB
+          MacBook</strong> &mdash; scored:
+        </p>
+        <p class="bench-headline">
+          <strong>94.5%</strong> intent-routing accuracy &nbsp;&middot;&nbsp; <strong>0/100</strong> bail-outs &nbsp;&middot;&nbsp; <strong>5.85&nbsp;s</strong> mean latency
+        </p>
+        <p>
+          We deliberately did <em>not</em> run cloud-API rows ourselves. The harness ships open;
+          run it on whatever keys you have, against any OpenAI-compatible, Anthropic, or Ollama
+          endpoint. The whole point of Macrokit is that frontier-API access shouldn&rsquo;t be the
+          benchmark.
+        </p>
+        <p class="bench-link">
+          <a href="https://github.com/macrokit/core/blob/main/docs/BENCHMARK.md" rel="noopener">Read the benchmark methodology &amp; full results &rarr;</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="section status">
       <div class="container">
         <h2>Status</h2>
         <p>

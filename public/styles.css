@@ -235,6 +235,22 @@ code {
 /* Status section */
 .status p { font-size: 16px; }
 
+/* Benchmark headline */
+.bench-headline {
+  font-size: 22px;
+  margin: 28px 0 24px;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+}
+.bench-headline strong {
+  color: var(--brand);
+  font-weight: 700;
+}
+.bench-link {
+  margin-top: 16px;
+  font-weight: 600;
+}
+
 /* Footer */
 .site-footer {
   padding: 28px 0;
