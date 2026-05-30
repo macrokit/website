@@ -38,8 +38,9 @@
         <p class="eyebrow">Pre-release · Launching Q3 2026</p>
         <h1>Weak and local LLMs that work like frontier models &mdash; on narrow workflows.</h1>
         <p class="lede">
-          Macrokit is an open-source SDK for shipping LLM applications under cloud-API constraints &mdash;
-          data residency, compliance, air-gapped networks, or budget.
+          Macrokit is an open-source SDK &mdash; and an open format for <em>macros</em>, the deterministic,
+          distilled workflows a weak or local model can run &mdash; for shipping LLM applications under
+          cloud-API constraints: data residency, compliance, air-gapped networks, or budget.
         </p>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/macrokit" rel="noopener">View on GitHub</a>
@@ -141,6 +142,9 @@
         <dl class="compare">
           <dt>Not an agent framework.</dt>
           <dd>Agent frameworks compete on letting LLMs reason. Macrokit competes by eliminating runtime reasoning. Different philosophy.</dd>
+
+          <dt>Not a skills or prompt format.</dt>
+          <dd>A <em>skill</em> tells a strong model how to think. A <em>macro</em> is the compiled, deterministic result of that thinking &mdash; it runs on weak and local models with no reasoning at runtime. Macros can call MCP tools as primitives; Macrokit sits <em>above</em> MCP, not against it.</dd>
 
           <dt>Not a model.</dt>
           <dd>BYO-model. Ships adapters for OpenAI-compatible APIs and Ollama out of the box.</dd>
