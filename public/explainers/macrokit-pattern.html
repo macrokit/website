@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The MacroKit Pattern, Explained — macrokit.dev</title>
+<style>
+  :root{
+    --ink:#1a1f2e; --sub:#5a6478; --line:#e3e7ef; --bg:#fbfcfe; --card:#ffffff;
+    --accent:#2757d6; --accent2:#0d9d6c; --warn:#c2502a; --code:#f0f3f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.65 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  main{max-width:760px;margin:0 auto;padding:48px 20px 80px}
+  h1{font-size:34px;line-height:1.2;margin:0 0 8px}
+  .kicker{color:var(--accent);font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;font-size:13px;margin-bottom:14px}
+  .lede{font-size:20px;color:var(--sub);margin:0 0 36px}
+  h2{font-size:23px;margin:44px 0 12px}
+  p{margin:0 0 16px}
+  .fig{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:22px 18px 10px;margin:26px 0;overflow-x:auto}
+  .fig figcaption{font-size:13.5px;color:var(--sub);padding:10px 6px 8px}
+  .callout{border-left:3px solid var(--accent);background:var(--code);
+    padding:14px 18px;border-radius:0 10px 10px 0;margin:22px 0}
+  .callout.warn{border-color:var(--warn)}
+  .num{font-variant-numeric:tabular-nums;font-weight:700}
+  code{background:var(--code);padding:2px 6px;border-radius:5px;font-size:.92em}
+  .refs{border-top:1px solid var(--line);margin-top:52px;padding-top:18px;
+    font-size:14.5px;color:var(--sub)}
+  .refs a{color:var(--accent)}
+  svg text{font-family:inherit}
+</style>
+</head>
+<body>
+<main>
+<div class="kicker">macrokit.dev · paper, explained</div>
+<h1>Stop paying for the same reasoning twice</h1>
+<p class="lede">The MacroKit Pattern in one sitting: why your agent
+re-derives an identical plan on every request, what it costs you, and the
+compiler-shaped fix that let a 7B local model hold
+<span class="num">94.5%</span> routing accuracy at roughly
+<span class="num">1/5000</span> of the price.</p>
+
+<h2>The bill you are actually paying</h2>
+<p>Most production agents work like this: a request arrives, a frontier
+model reads the prompt stack, reasons its way to a plan, executes, and
+forgets everything. The next, nearly identical request pays for all of that
+reasoning again. If a workflow runs a thousand times a day, you are buying
+the same chain of thought a thousand times — at frontier prices, roughly
+<span class="num">$0.50</span> a run for the workloads we measured.</p>
+
+<div class="callout"><strong>The one idea:</strong> reasoning about
+<em>how</em> to do a task and <em>doing</em> the task are different
+workloads. Price them differently.</div>
+
+<h2>An analogy you already trust: the compiler</h2>
+<p>Nobody re-compiles a program every time they run it. You compile once —
+slow, expensive, done by heavy machinery — and then the binary runs cheaply,
+forever, on modest hardware. MacroKit applies exactly that split to agents:</p>
+<ul>
+  <li><strong>Design time = compile time.</strong> A frontier model works
+  through the task once and its reasoning is captured as a
+  <strong>macro</strong> — an explicit, replayable encoding of the workflow;</li>
+  <li><strong>Runtime = execution.</strong> A small local model (7B-class)
+  does two cheap jobs: route the incoming request to the right macro, and
+  replay it — filling in the request-specific details.</li>
+</ul>
+
+<figure class="fig">
+<svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img"
+  aria-label="Two architectures compared: every-request frontier reasoning versus one-time macro encoding replayed by a local model">
+  <text x="20" y="28" font-size="14" font-weight="700" fill="#c2502a">Without the pattern</text>
+  <g font-size="12.5" fill="#1a1f2e">
+    <rect x="20" y="44" width="120" height="40" rx="8" fill="#fdf1ec" stroke="#c2502a"/>
+    <text x="80" y="68" text-anchor="middle">request #1…N</text>
+    <rect x="220" y="44" width="180" height="40" rx="8" fill="#fdf1ec" stroke="#c2502a"/>
+    <text x="310" y="61" text-anchor="middle">frontier model</text>
+    <text x="310" y="76" text-anchor="middle" fill="#5a6478">re-reasons every time</text>
+    <rect x="480" y="44" width="120" height="40" rx="8" fill="#fdf1ec" stroke="#c2502a"/>
+    <text x="540" y="68" text-anchor="middle">result</text>
+    <line x1="140" y1="64" x2="220" y2="64" stroke="#c2502a" stroke-width="1.6"/>
+    <line x1="400" y1="64" x2="480" y2="64" stroke="#c2502a" stroke-width="1.6"/>
+    <text x="614" y="68" font-size="13" fill="#c2502a" font-weight="700">~$0.50/run</text>
+  </g>
+  <text x="20" y="132" font-size="14" font-weight="700" fill="#0d9d6c">With the pattern</text>
+  <g font-size="12.5" fill="#1a1f2e">
+    <rect x="20" y="148" width="180" height="44" rx="8" fill="#eefaf4" stroke="#0d9d6c"/>
+    <text x="110" y="166" text-anchor="middle">frontier model</text>
+    <text x="110" y="181" text-anchor="middle" fill="#5a6478">reasons ONCE (design time)</text>
+    <rect x="250" y="148" width="130" height="44" rx="8" fill="#eefaf4" stroke="#0d9d6c"/>
+    <text x="315" y="166" text-anchor="middle">macro library</text>
+    <text x="315" y="181" text-anchor="middle" fill="#5a6478">explicit, versioned</text>
+    <line x1="200" y1="170" x2="250" y2="170" stroke="#0d9d6c" stroke-width="1.6"/>
+    <rect x="20" y="228" width="120" height="40" rx="8" fill="#fff" stroke="#5a6478"/>
+    <text x="80" y="252" text-anchor="middle">request #1…N</text>
+    <rect x="220" y="228" width="180" height="40" rx="8" fill="#eefaf4" stroke="#0d9d6c"/>
+    <text x="310" y="245" text-anchor="middle">7B local model</text>
+    <text x="310" y="260" text-anchor="middle" fill="#5a6478">routes + replays macro</text>
+    <rect x="480" y="228" width="120" height="40" rx="8" fill="#eefaf4" stroke="#0d9d6c"/>
+    <text x="540" y="252" text-anchor="middle">result</text>
+    <line x1="140" y1="248" x2="220" y2="248" stroke="#0d9d6c" stroke-width="1.6"/>
+    <line x1="400" y1="248" x2="480" y2="248" stroke="#0d9d6c" stroke-width="1.6"/>
+    <line x1="315" y1="192" x2="312" y2="228" stroke="#0d9d6c" stroke-width="1.2" stroke-dasharray="4 3"/>
+    <text x="614" y="252" font-size="13" fill="#0d9d6c" font-weight="700">~$0.0001/run</text>
+  </g>
+</svg>
+<figcaption>Fig. 1 — The same split compilers made sixty years ago: pay for
+reasoning once at design time; pay only for execution at runtime.</figcaption>
+</figure>
+
+<h2>What the numbers said</h2>
+<p>On a 100-task intent-routing benchmark, a 7B local model replaying
+distilled macros reached <span class="num">94.5%</span> routing accuracy with
+zero structural failures — at about <span class="num">$0.0001</span> per run
+versus <span class="num">~$0.50</span> with a frontier model in the loop:
+a <span class="num">~5000×</span> cost gap on the workloads measured.</p>
+
+<figure class="fig">
+<svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" role="img"
+  aria-label="Accuracy bar chart: same 7B model at 53.5 percent with a misconfigured SDK rendering versus 94.5 percent after one configuration fix">
+  <text x="20" y="24" font-size="14" font-weight="700" fill="#1a1f2e">Same model, one configuration choice apart</text>
+  <g font-size="12.5">
+    <text x="20" y="66" fill="#5a6478">before</text>
+    <rect x="90" y="50" width="278" height="24" rx="5" fill="#f3c9b8"/>
+    <text x="380" y="67" fill="#c2502a" font-weight="700">53.5%</text>
+    <text x="20" y="112" fill="#5a6478">after</text>
+    <rect x="90" y="96" width="491" height="24" rx="5" fill="#9fd9c3"/>
+    <text x="592" y="113" fill="#0d9d6c" font-weight="700">94.5%</text>
+    <text x="90" y="150" fill="#5a6478">The delta was one SDK setting — how argument names were rendered
+      to the model. Capability was never the bottleneck; configuration was.</text>
+  </g>
+</svg>
+<figcaption>Fig. 2 — The most useful failure in the paper: a
+41-point accuracy swing traced to a single configuration choice, not to
+model capability.</figcaption>
+</figure>
+
+<h2>Where it works — and where it honestly doesn't</h2>
+<p>The pattern earns its keep on <strong>narrow, recurring
+workflows</strong>: the same shape of task arriving over and over, where a
+frontier model's reasoning can be captured once and replayed with different
+parameters. That is precisely why the SDK ships a
+<strong>distillation gate</strong> — a static analyzer that flags which
+workflows are worth encoding as macros and, just as importantly, which are
+not.</p>
+<div class="callout warn"><strong>Not a free lunch:</strong> open-ended,
+novel, one-off tasks still belong to the frontier model. The pattern does
+not make a small model smart; it makes previously-captured intelligence
+cheap to re-run. If your workload never repeats, there is nothing to
+compile.</div>
+
+<h2>Try it / verify it</h2>
+<p>Everything above is checkable — the benchmark, the SDK, and the macro
+format are public.</p>
+<div class="refs">
+  <p><strong>Paper:</strong> Qian, C. <em>The MacroKit Pattern: Intent
+  Routing and Macro Distillation for Weak LLMs on Narrow Workflows</em>
+  (2026). DOI:
+  <a href="https://doi.org/10.5281/zenodo.20446805">10.5281/zenodo.20446805</a><br>
+  <strong>Code:</strong>
+  <a href="https://github.com/macrokit">github.com/macrokit</a>
+  (Apache-2.0 SDK: runtime router, adapters, replay test harness)<br>
+  <strong>More from this line of work:</strong>
+  <a href="https://macrokit.dev">macrokit.dev</a> ·
+  <a href="https://value.macrokit.dev">A Mathematical Theory of Value</a></p>
+  <p style="font-size:13px">All diagrams and analogies on this page are
+  original to this explainer. Figures summarize results reported in the
+  paper above; consult it for methodology and full benchmarks.</p>
+</div>
+</main>
+</body>
+</html>
